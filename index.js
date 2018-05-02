@@ -24,7 +24,7 @@ app.use(morgan('combined'));
 router(app);
 
 // Server setup
-const port = process.env.PORT || 3090;
+const port = process.env.PORT || 3010;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });

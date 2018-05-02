@@ -1,8 +1,15 @@
-const User = require('../models/user');
 const mongoose = require('mongoose');
+const jwt = require('jwt-simple');
+const User = require('../models/user');
+const config = require('../config');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+
+function tokenForUser(user) {
+  const timeStamp = new Date().getTime();
+  return jwt.encode({sub: user.id, iat: timeStamp}, config.secret)
+}
 
 exports.signup = (req, res, next) => {
 
@@ -22,7 +29,7 @@ exports.signup = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.json(dbUser);
+      res.json({token: tokenForUser(user)});
     });
 
   });
